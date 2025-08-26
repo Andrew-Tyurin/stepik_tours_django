@@ -8,6 +8,7 @@ def main_view(request):
 
 
 def departure_view(request, departure):
+    """test_1 docstring"""
     return render(request, 'tours/departure.html')
 
 
