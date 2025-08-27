@@ -13,6 +13,7 @@ def departure_view(request, departure):
 
 
 def tour_view(request, tour_id):
+    """test_2 docstring"""
     return render(request, 'tours/tour.html')
 
 
