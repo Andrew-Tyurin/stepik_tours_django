@@ -18,6 +18,7 @@ def tour_view(request, tour_id):
 
 
 def custom_handler404(request, exception):
+    """test_3 docstring"""
     return HttpResponseNotFound('Ошибка: 404')
 
 
