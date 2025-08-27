@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponseNotFound, HttpResponseServerError
+from . import data
 
 
 def main_view(request):
@@ -13,8 +14,16 @@ def departure_view(request, departure):
 
 
 def tour_view(request, tour_id):
-    """test_2 docstring"""
-    return render(request, 'tours/tour.html')
+    if tour_id in data.tours:
+        tour = data.tours[tour_id]
+        city = data.departures[tour['departure']]
+        stars = range(int(tour['stars']))
+        return render(
+            request,
+            'tours/tour.html',
+            {'tour': tour, 'city': city, 'stars': stars}
+        )
+    return custom_handler404(request, HttpResponseNotFound)
 
 
 def custom_handler404(request, exception):
