@@ -23,4 +23,5 @@ def custom_handler404(request, exception):
 
 
 def custom_handler500(exception):
+    """test_4 docstring"""
     return HttpResponseServerError('Ошибка: 500')
