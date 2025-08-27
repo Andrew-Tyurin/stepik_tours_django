@@ -3,7 +3,7 @@ from django.http import HttpResponseNotFound, HttpResponseServerError
 
 
 def main_view(request):
-    """test docstring"""
+    """test_0 docstring"""
     return render(request, 'tours/index.html')
 
 
