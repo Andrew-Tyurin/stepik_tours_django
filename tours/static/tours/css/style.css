@@ -1,0 +1,18 @@
+.my_distance_p > p {
+    margin-bottom: 0.2em;
+}
+
+.bg-custom {
+    background-position: center;
+    background-size: cover;
+}
+
+/*text-decoration-none text-body*/
+.qwer {color: black}
+
+.card_custom:hover {
+    transform: scale(1.08);
+    transition: transform 0.3s ease;
+    background: #373737;
+    .qwer {color: white}
+}

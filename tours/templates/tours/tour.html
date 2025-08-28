@@ -1,6 +1,5 @@
 {% extends 'tours/sample_main.html' %}
 {% load humanize %}
-
 {% block my_title %}Stepik travel{% endblock %}
 
 {% block my_body %}
@@ -45,7 +44,7 @@
             <!-- HERO -->
             <p class="lead">{{ tour.country }}. {{ city }}</p>
             <img src="{{ tour.picture }}"
-                 class="w-75" alt="tour.country">
+                 class="w-75" alt="picture {{ tour.country }}">
             <p class="my-4 w-75">
                 {{ tour.description }}
             </p>
