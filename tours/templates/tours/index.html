@@ -4,45 +4,43 @@
 {% block my_title %}tours main{% endblock %}
 
 {% block my_body %}
-
-<main class="container mt-3">
-<!-- HERO -->
-    <section class="bg-custom jumbotron mt-4"
-             style="background-image: url({% static 'tours/img/slide_1.png' %})">
-        <div class="text-center font-weight-bold">
-            <h1 class="display-4">Всякие туры</h1>
-            <p class="lead">{{ subtitle }}</p>
-            <p class="mt-5 w-50 mx-auto">{{ description }}</p>
-        </div>
-    </section>
-    <!-- CARDS -->
-    <div class="row mt-5">
-        {% for key, value in tours_random.items %}
-            <div class="col-4">
-                <div class="card card_custom mb-4">
-                    <a class="qwer text-decoration-none" href="/tour/{{ key }}">
-                        <div class="embed-responsive embed-responsive-16by9">
-                            <img class="card-img-top embed-responsive-item"
-                                 src="{{ value.picture }}"
-                                 alt="picture {{ value.country }}_tour_{{ key }}"/>
-                        </div>
-                        <div class="card-body">
-                            <p class="h5 card-title font-weight-bold">{{ value.title }}</p>
-                            <p class="card-text">
-                                {{ value.description | truncatechars:50}}
-                            </p>
-                            <div class="my_distance_p">
-                                <p><b>Звёзд: {{ value.stars }}★</b></p>
-                                <p><b>Страна:</b> <i>{{ value.country }}</i></p>
-                                <p><b>Отправление:</b> <i>{{ value.date }}</i></p>
-                                <p><b>Цена:</b> <i>{{ value.price | intcomma }} Р</i></p>
-                            </div>
-                        </div>
-                    </a>
-                </div>
+    <main class="container mt-3">
+    <!-- HERO -->
+        <section class="bg-custom jumbotron mt-4"
+                 style="background-image: url({% static 'tours/img/slide_1.png' %})">
+            <div class="text-center font-weight-bold">
+                <h1 class="display-4">Всякие туры</h1>
+                <p class="lead">{{ subtitle }}</p>
+                <p class="mt-5 w-50 mx-auto">{{ description }}</p>
             </div>
-        {% endfor %}
-    </div>
-</main>
-
+        </section>
+        <!-- CARDS -->
+        <div class="row mt-5">
+            {% for key, value in tours_random.items %}
+                <div class="col-lg-4 col-sm-6 d-flex">
+                    <div class="card card_custom mb-4 flex-fill">
+                        <a class="qwer text-decoration-none" href="/tour/{{ key }}">
+                            <div class="embed-responsive embed-responsive-16by9">
+                                <img class="card-img-top embed-responsive-item"
+                                     src="{{ value.picture }}"
+                                     alt="picture {{ value.country }}_tour_{{ key }}"/>
+                            </div>
+                            <div class="card-body">
+                                <p class="h5 card-title font-weight-bold">{{ value.title }}</p>
+                                <p class="card-text">
+                                    {{ value.description | truncatechars:50}}
+                                </p>
+                                <div class="my_distance_p">
+                                    <p><b>Звёзд: {{ value.stars }}★</b></p>
+                                    <p><b>Страна:</b> <i>{{ value.country }}</i></p>
+                                    <p><b>Отправление:</b> <i>{{ value.date }}</i></p>
+                                    <p><b>Цена:</b> <i>{{ value.price | intcomma }} Р</i></p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </main>
 {% endblock %}

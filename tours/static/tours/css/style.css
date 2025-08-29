@@ -16,3 +16,11 @@
     background: #373737;
     .qwer {color: white}
 }
+
+@media screen and (max-width: 576px) {
+    .custom_extra_small {width: 400px;}
+    .display-4, .display-3 {
+        font-size: 30px;
+        font-weight: bold;
+    }
+}
