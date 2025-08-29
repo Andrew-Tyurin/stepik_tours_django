@@ -8,13 +8,13 @@
 }
 
 /*text-decoration-none text-body*/
-.qwer {color: black}
+.color_link {color: black}
 
 .card_custom:hover {
     transform: scale(1.08);
     transition: transform 0.3s ease;
     background: #373737;
-    .qwer {color: white}
+    .color_link {color: white}
 }
 
 @media screen and (max-width: 576px) {
