@@ -17,8 +17,30 @@ def main_view(request):
     )
 
 
-def departure_view(request, departure):
-    return render(request, 'tours/departure.html')
+def departure_view(request, departure_url):
+    try:
+        city = data.departures[departure_url]
+    except KeyError:
+        raise Http404(f'Нету такого ключа - {departure_url}/название города')
+    tours_from_city = {}
+    for key, value in data.tours.items():
+        if departure_url == value['departure']:
+            tours_from_city.setdefault(key, value)
+    price_list = [tours_from_city[key]['price'] for key in tours_from_city]
+    count_night = [tours_from_city[key]['nights'] for key in tours_from_city]
+    return render(
+        request,
+        'tours/departure.html',
+        {
+            'tours_from_city': tours_from_city,
+            'city': city,
+            'count_tours': len(tours_from_city),
+            'min_price': min(price_list),
+            'max_price': max(price_list),
+            'min_night': min(count_night),
+            'max_night': max(count_night),
+        }
+    )
 
 
 def tour_view(request, tour_id):
@@ -38,7 +60,7 @@ def tour_view(request, tour_id):
             'tours/tour.html',
             {'tour': tour, 'city': city, 'stars': stars}
         )
-    raise Http404('Нету страницы с таким номером')
+    raise Http404(f'Нету такого ключа - {tour_id}/номер тура')
 
 
 def custom_handler404(request, exception):
