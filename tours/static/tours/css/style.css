@@ -7,7 +7,6 @@
     background-size: cover;
 }
 
-/*text-decoration-none text-body*/
 .color_link {color: black}
 
 .card_custom:hover {
@@ -15,6 +14,11 @@
     transition: transform 0.3s ease;
     background: #373737;
     .color_link {color: white}
+}
+
+.navbar-brand:hover {
+    transform: scale(1.1);
+    transition: transform 0.2s ease;
 }
 
 @media screen and (max-width: 576px) {

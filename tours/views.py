@@ -4,12 +4,24 @@ from django.http import HttpResponseNotFound, HttpResponseServerError, Http404
 from . import data
 
 
-def key_error(collection, key):
+def key_error(collection: dict, key) -> dict:
+    """
+    Функция проверяет чтобы urls/запрос пользователя
+    был ключом словаря из moc-data и возвращает значение ключа,
+    иначе вызываем исключение not found(error404).
+    """
     try:
         collection_key = collection[key]
     except KeyError:
         raise Http404
     return collection_key
+
+
+def data_filter(collection, key):
+    """
+    Функция возвращает список значений конкретного ключа
+    """
+    return [collection[i][key] for i in collection]
 
 
 def main_view(request):
@@ -31,9 +43,8 @@ def departure_view(request, departure_url):
     for key, value in data.tours.items():
         if departure_url == value['departure']:
             tours_from_city.setdefault(key, value)
-    price_list = [tours_from_city[key]['price'] for key in tours_from_city]
-    count_night = [tours_from_city[key]['nights'] for key in tours_from_city]
-
+    price_list = data_filter(tours_from_city, 'price')
+    count_night = data_filter(tours_from_city, 'nights')
     return render(
         request,
         'tours/departure.html',
@@ -50,12 +61,6 @@ def departure_view(request, departure_url):
 
 
 def tour_view(request, tour_id):
-    """
-    т.к URLs который отправляет сюда запрос, ожидает int,
-    числа могут не совпадать с ключом. Проверим числа в
-    функции key_error, чтобы избежать ошибки ServerError.
-    И вызывать 'raise Http404'
-    """
     tour = key_error(data.tours, tour_id)
     city = data.departures[tour['departure']]
     stars = range(int(tour['stars']))
@@ -67,8 +72,8 @@ def tour_view(request, tour_id):
 
 
 def custom_handler404(request, exception):
-    return HttpResponseNotFound('Ошибка: 404')
+    return HttpResponseNotFound('Ошибка: 404 - страница не найдена')
 
 
 def custom_handler500(exception):
-    return HttpResponseServerError('Ошибка: 500')
+    return HttpResponseServerError('Ошибка: 500 - проблема на сервере')
