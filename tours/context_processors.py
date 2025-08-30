@@ -1,13 +1,14 @@
 from . import data
 
+
 def global_data(request):
     """
     Context processor — это функция, которая автоматически
     добавляет данные во все шаблоны. Реализация в views.py
-    можно, но но это считается плохим стилем, т.к. view
+    можно, но это считается плохим стилем, т.к. view
     и процессоры — разные вещи. Эта функция нужна для вывода
     данных в навигационную панель которая не завесит от запроса.
     Не забываем в setting.py -> TEMPLATES дополнить:
     'tours.context_processors.global_data'
     """
-    return {'departures': data.departures,}
+    return {'departures': data.departures}

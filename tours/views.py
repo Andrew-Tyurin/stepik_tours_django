@@ -4,6 +4,14 @@ from django.http import HttpResponseNotFound, HttpResponseServerError, Http404
 from . import data
 
 
+def key_error(collection, key):
+    try:
+        collection_key = collection[key]
+    except KeyError:
+        raise Http404
+    return collection_key
+
+
 def main_view(request):
     subtitle = data.subtitle
     description = data.description
@@ -18,16 +26,14 @@ def main_view(request):
 
 
 def departure_view(request, departure_url):
-    try:
-        city = data.departures[departure_url]
-    except KeyError:
-        raise Http404(f'Нету такого ключа - {departure_url}/название города')
+    city = key_error(data.departures, departure_url)
     tours_from_city = {}
     for key, value in data.tours.items():
         if departure_url == value['departure']:
             tours_from_city.setdefault(key, value)
     price_list = [tours_from_city[key]['price'] for key in tours_from_city]
     count_night = [tours_from_city[key]['nights'] for key in tours_from_city]
+
     return render(
         request,
         'tours/departure.html',
@@ -46,21 +52,18 @@ def departure_view(request, departure_url):
 def tour_view(request, tour_id):
     """
     т.к URLs который отправляет сюда запрос, ожидает int,
-    числа могут не совпадать с ключами наших данных(если
-    в эту функцию попадёт неправильное число, то будет
-    исключение ServerError - это будет не корректно).
-    Тогда мы вызываем not found, raise Http404
+    числа могут не совпадать с ключом. Проверим числа в
+    функции key_error, чтобы избежать ошибки ServerError.
+    И вызывать 'raise Http404'
     """
-    if tour_id in data.tours:
-        tour = data.tours[tour_id]
-        city = data.departures[tour['departure']]
-        stars = range(int(tour['stars']))
-        return render(
-            request,
-            'tours/tour.html',
-            {'tour': tour, 'city': city, 'stars': stars}
-        )
-    raise Http404(f'Нету такого ключа - {tour_id}/номер тура')
+    tour = key_error(data.tours, tour_id)
+    city = data.departures[tour['departure']]
+    stars = range(int(tour['stars']))
+    return render(
+        request,
+        'tours/tour.html',
+        {'tour': tour, 'city': city, 'stars': stars}
+    )
 
 
 def custom_handler404(request, exception):
