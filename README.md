@@ -18,8 +18,8 @@ pip install -r requirements.txt
 терминал:  
 ./manage.py runserver  
 или  
-python manage.py runserver
-или
+python manage.py runserver  
+или  
 используйте своё IDE
 
 - открыть в браузере http://127.0.0.1:8000
