@@ -36,3 +36,6 @@ python manage.py migrate
 - Страница /departure/'город' выводит туры из конкретного города.
 
 - Страница /tour/число выводит тур под конкретным номером.
+
+
+- web url сайта: https://stepik-tours-django.onrender.com/
