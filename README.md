@@ -10,8 +10,7 @@
 python3 -m venv venv  
 source venv/bin/activate
 
-- установить зависимости/пакеты,  
-терминал:  
+- установить зависимости/пакеты, терминал:  
 pip install -r requirements.txt
 
 - Собираем статик файлы:  
