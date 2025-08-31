@@ -1,10 +1,10 @@
 from random import sample
 from django.shortcuts import render
-from django.http import HttpResponseNotFound, HttpResponseServerError, Http404
+from django.http import HttpResponseNotFound, HttpResponseServerError, Http404, HttpRequest, HttpResponse
 from . import data
 
 
-def key_error(collection: dict, key) -> dict:
+def key_error(collection: dict, key: str | int) -> str | dict:
     """
     Функция проверяет чтобы urls/запрос пользователя
     был ключом словаря из moc-data и возвращает значение ключа,
@@ -17,14 +17,14 @@ def key_error(collection: dict, key) -> dict:
     return collection_key
 
 
-def data_filter(collection, key):
+def data_filter(collection: dict, key: str) -> list:
     """
     Функция возвращает список значений конкретного ключа
     """
     return [collection[i][key] for i in collection]
 
 
-def main_view(request):
+def main_view(request: HttpRequest) -> HttpResponse:
     subtitle = data.subtitle
     description = data.description
     tours_random = {}
@@ -37,7 +37,7 @@ def main_view(request):
     )
 
 
-def departure_view(request, departure_url):
+def departure_view(request: HttpRequest, departure_url: str) -> HttpResponse:
     city = key_error(data.departures, departure_url)
     tours_from_city = {}
     for key, value in data.tours.items():
@@ -60,7 +60,7 @@ def departure_view(request, departure_url):
     )
 
 
-def tour_view(request, tour_id):
+def tour_view(request: HttpRequest, tour_id: int) -> HttpResponse:
     tour = key_error(data.tours, tour_id)
     city = data.departures[tour['departure']]
     stars = range(int(tour['stars']))
@@ -71,9 +71,9 @@ def tour_view(request, tour_id):
     )
 
 
-def custom_handler404(request, exception):
+def custom_handler404(request: HttpRequest, exception: Http404) -> HttpResponse:
     return HttpResponseNotFound('Ошибка: 404 - страница не найдена')
 
 
-def custom_handler500(exception):
+def custom_handler500(exception: HttpRequest) -> HttpResponse:
     return HttpResponseServerError('Ошибка: 500 - проблема на сервере')
