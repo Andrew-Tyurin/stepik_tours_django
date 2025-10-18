@@ -4,7 +4,7 @@ from django.http import HttpResponseNotFound, HttpResponseServerError, Http404, 
 from . import data
 
 
-def key_error(collection: dict, key: str | int) -> str | dict:
+def key_error(collection: dict, key: str | int) -> str | data.Tours:
     """
     Функция проверяет чтобы urls/запрос пользователя
     был ключом словаря из moc-data и возвращает значение ключа,
@@ -15,14 +15,6 @@ def key_error(collection: dict, key: str | int) -> str | dict:
     except KeyError:
         raise Http404
     return collection_key
-
-
-def data_filter(collection: dict, key: str) -> list:
-    """
-    Функция возвращает список значений конкретного ключа
-    """
-    return [collection[i][key] for i in collection]
-
 
 def main_view(request: HttpRequest) -> HttpResponse:
     subtitle = data.subtitle
@@ -41,10 +33,10 @@ def departure_view(request: HttpRequest, departure_url: str) -> HttpResponse:
     city = key_error(data.departures, departure_url)
     tours_from_city = {}
     for key, value in data.tours.items():
-        if departure_url == value['departure']:
+        if departure_url == value.departure:
             tours_from_city.setdefault(key, value)
-    price_list = data_filter(tours_from_city, 'price')
-    count_night = data_filter(tours_from_city, 'nights')
+    price_list = list(map(lambda k: tours_from_city[k].price, tours_from_city))
+    count_night = list(map(lambda k: tours_from_city[k].nights, tours_from_city))
     return render(
         request,
         'tours/departure.html',
@@ -62,8 +54,8 @@ def departure_view(request: HttpRequest, departure_url: str) -> HttpResponse:
 
 def tour_view(request: HttpRequest, tour_id: int) -> HttpResponse:
     tour = key_error(data.tours, tour_id)
-    city = data.departures[tour['departure']]
-    stars = range(int(tour['stars']))
+    city = data.departures[tour.departure]
+    stars = range(tour.stars)
     return render(
         request,
         'tours/tour.html',
